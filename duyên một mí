@@ -1,0 +1,77 @@
+- 👋 Hi, I’m @duyenmtomi
+- 👀 I’m interested in ...
+- 🌱 I’m currently learning ...
+- 💞️ I’m looking to collaborate on ...
+- 📫 How to reach me ...
+
+<!---
+tanhcode/tanhcode is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+You can click the Preview link to take a look at your changes.
+--->>>> import locale
+>>> loc = locale.getlocale()  # get current locale
+# use German locale; name might vary with platform
+>>> locale.setlocale(locale.LC_ALL, 'de_DE')
+>>> locale.strcoll('f\xe4n', 'foo')  # compare a string containing an umlaut
+>>> locale.setlocale(locale.LC_ALL, '')   # use user's preferred locale
+>>> locale.setlocale(locale.LC_ALL, 'C')  # use default (C) locale
+>>> locale.setlocale(locale.LC_ALL, loc)  # restore saved locale
+```
+
+However locale.getlocale() does not return the locale for all categories (locale.LC_ALL is even not allowed) but the locale for the LC_CTYPE category.
+
+Therefore restoring it using `locale.setlocale(locale.LC_ALL, loc)` does not actually restore the initial settings, and may even fail on some platforms (on mine it does).
+
+The correct example should have the first line of code replaced with
+
+```
+>>> loc = locale.setlocale(locale.LC_ALL)  # get current locale
+>>> Since this is primarily for greenlets (and any other stackful coroutines libraries that want to use it) it will be "unstable".
+
+In this case, by "unstable" I mean:
+1. Starts with an underscore
+2. Gets PyAPI_FUNC annotations, so we don't strip the symbols from the executable
+3. Undocumented, except for comments that say it is unstable.
+
+The API will be:
+
+```
+typedef struct _frame_stack {
+    _PyStackChunk *current_chunk;
+    PyObject **top;
+    PyObject **limit;
+    int chunk_size;
+} _PyFrameStack;
+
+PyAPI_FUNC(void) _PyFrameStack_Init(_PyFrameStack *fs, int chunk_size);
+PyAPI_FUNC(void) _PyFrameStack_Swap(_PyFrameStack *fs);
+PyAPI_FUNC(void) _PyFrameStack_Free(_PyFrameStack *fs);
+SECTION 1 - GENERAL INFORMATION 
+faq-1.1   What is Vim?
+faq-1.2   Who wrote Vim?
+faq-1.3   Is Vim compatible with Vi?
+faq-1.4   What are some of the improvements of Vim over Vi?
+faq-1.5   Is Vim free?
+                                                        faq-resources
+SECTION 2 - RESOURCES 
+faq-2.1   Where can I learn more about Vim?
+faq-2.2   Is there a mailing list available?
+faq-2.3   Is there an archive available for the Vim mailing lists?
+faq-2.4   Where can I get the Vim user manual in HTML/PDF/PS format?
+faq-2.5   I have a "xyz" (some) problem with Vim. How do I determine if it is
+          a problem with my setup or with Vim?
+faq-2.6   Where can I report bugs?
+faq-2.7   Where can the FAQ be found?
+faq-2.8   What if I don't find an answer in this FAQ?
+faq-2.9   I have a patch for implementing a Vim feature. Where do I send the
+          patch?
+faq-2.10  I have a Vim tip or developed a new Vim
+          syntax/indent/filetype/compiler plugin or developed a new script
+          or a colorscheme. Is there a public website where I can upload
+          this?
+                                                        faq-availability
+SECTION 3 - AVAILABILITY 
+faq-3.1   What is the latest version of Vim?
+faq-3.2   Where can I find the latest version of Vim?
+faq-3.3   What platforms does it run on?
+faq-3.4   Where can I download the latest version of the Vim runtime files?
+                                                                faq-help
